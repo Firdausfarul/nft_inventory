@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:nft_inventory/models/product.dart';
 import 'package:nft_inventory/widgets/left_drawer.dart';
 import 'package:nft_inventory/screens/individual_item.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -15,19 +17,15 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   Future<List<Product>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url =
-        Uri.parse('https://muhammad-fachrudin-tugas.pbp.cs.ui.ac.id/json/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
 
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    final request = context.watch<CookieRequest>();
+    var response = await request.get(
+      'https://muhammad-fachrudin-tugas.pbp.cs.ui.ac.id/json/',
+    );
 
     // melakukan konversi data json menjadi object Product
     List<Product> list_product = [];
-    for (var d in data) {
+    for (var d in response) {
       if (d != null) {
         list_product.add(Product.fromJson(d));
       }
