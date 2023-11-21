@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:nft_inventory/screens/login.dart';
 import 'package:nft_inventory/widgets/left_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:nft_inventory/screens/menu.dart';
 import 'dart:convert';
 
-class ShopFormPage extends StatefulWidget {
-  const ShopFormPage({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<ShopFormPage> createState() => _ShopFormPageState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _ShopFormPageState extends State<ShopFormPage> {
+class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-  String _name = "";
-  int _price = 0;
-  int _amount = 0;
-  String _description = "";
-  String _imgUrl = "";
+  String _username = "";
+  String _password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +24,7 @@ class _ShopFormPageState extends State<ShopFormPage> {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Form Tambah Produk',
+            'Form Register',
           ),
         ),
         backgroundColor: Colors.indigo,
@@ -44,15 +41,15 @@ class _ShopFormPageState extends State<ShopFormPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Nama Produk",
-                    labelText: "Nama Produk",
+                    hintText: "Username",
+                    labelText: "Username",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _name = value!;
+                      _username = value!;
                     });
                   },
                   validator: (String? value) {
@@ -66,24 +63,22 @@ class _ShopFormPageState extends State<ShopFormPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  obscureText: true,
                   decoration: InputDecoration(
-                    hintText: "Harga",
-                    labelText: "Harga",
+                    hintText: "Password",
+                    labelText: "Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _price = int.parse(value!);
+                      _password = value!;
                     });
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return "Harga tidak boleh kosong!";
-                    }
-                    if (int.tryParse(value) == null) {
-                      return "Harga harus berupa angka!";
+                      return "Password tidak boleh kosong!";
                     }
                     return null;
                   },
@@ -92,70 +87,25 @@ class _ShopFormPageState extends State<ShopFormPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  obscureText: true,
                   decoration: InputDecoration(
-                    hintText: "Amount",
-                    labelText: "Amount",
+                    hintText: "Verify Password",
+                    labelText: "Verify Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _amount = int.parse(value!);
-                    });
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Amount tidak boleh kosong!";
-                    }
-                    if (int.tryParse(value) == null) {
-                      return "Amount harus berupa angka!";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Deskripsi",
-                    labelText: "Deskripsi",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _description = value!;
-                    });
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Deskripsi tidak boleh kosong!";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Img Url",
-                    labelText: "Img Url",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _imgUrl = value!;
+                      //KOSONG CUMA BUAT VALIDASI
                     });
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return "Img Url tidak boleh kosong!";
+                    }
+                    if (value != _password) {
+                      return "Password tidak sama!";
                     }
                     return null;
                   },
@@ -174,24 +124,20 @@ class _ShopFormPageState extends State<ShopFormPage> {
                         // Kirim ke Django dan tunggu respons
                         // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                         final response = await request.postJson(
-                            "https://muhammad-fachrudin-tugas.pbp.cs.ui.ac.id/create-flutter/",
+                            "https://muhammad-fachrudin-tugas.pbp.cs.ui.ac.id/auth/register/",
                             jsonEncode(<String, String>{
-                              'name': _name,
-                              'price': _price.toString(),
-                              'description': _description,
-                              'amount': _amount.toString(),
-                              'img_url': _imgUrl,
-                              // TODO: Sesuaikan field data sesuai dengan aplikasimu
+                              'username': _username,
+                              'password': _password,
                             }));
-                        if (response['status'] == 'success') {
+                        if (response['status'] == true) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content: Text("Produk baru berhasil disimpan!"),
+                            content: Text("Register berhasil!"),
                           ));
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MyHomePage()),
+                                builder: (context) => LoginPage()),
                           );
                         } else {
                           ScaffoldMessenger.of(context)
