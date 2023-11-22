@@ -142,3 +142,56 @@ Ketika memiih opsi (Tambah Item), maka aplikasi akan mengarahkan pengguna ke hal
 - [x] Mengarahkan pengguna ke halaman tersebut jika menekan tombol Lihat Produk pada halaman utama atau drawer.
 
     Sudah, pada shop card pada onTap / Ketika diklik kita tambahkan kode jika tombol yang diklik adalah tombol lihat produk maka akan Navigation.push ke page lihat produk.
+
+# Tugas 9
+
+## Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+
+    Bisa, namun kurang tepat. Karena dengan membuat model kita bisa mengatur tipe data yang akan diambil dari JSON. Jika tidak membuat model, maka kita harus mengkonversi data JSON menjadi tipe data yang kita inginkan secara manual.
+
+  **Perbandingan dengan Membuat Model**
+   - **Tanpa Model**: Lebih cepat dan fleksibel, terutama untuk pengembangan prototipe atau saat struktur data sering berubah.
+   - **Dengan Model**: Memberikan struktur yang lebih rapi dan jelas, memudahkan manajemen data, dan mengurangi kesalahan dalam penanganan data, terutama untuk aplikasi yang lebih kompleks.
+
+
+
+## Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+  - **Fungsi CookieRequest**: Digunakan untuk mengelola cookie dalam permintaan HTTP, penting untuk autentikasi, penyimpanan preferensi pengguna, dan pemeliharaan sesi pengguna.
+
+- **Pentingnya Bagi Semua Komponen**: Instance CookieRequest yang dibagikan ke semua komponen memastikan konsistensi dan kesinambungan dalam manajemen sesi pengguna, memudahkan semua komponen untuk mengakses dan memodifikasi cookie yang sama.
+
+  CookieRequest ini yang memungkinkan  kita bisa mengakses `request.user`` di django.
+
+## Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+  1. Kita melakukan GET request ke URL yang kita inginkan
+  2. Kita mendecode JSON hasil response tersebut.
+  3. Kita mengambil data yang kita inginkan dari hasil decode JSON tersebut.
+  4. Kita membuat objek flutter dari data yang kita ambil.
+  5. Kita menampilkan objek tersebut ke layar.
+
+## Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+  1. User menginput data mereka
+  2. Flutter melakukan validasi(gak boleh kosong)
+  3. Flutter melakukan POST request ke URL login dengan username dan password.
+  4. Django menagutentikasi User
+  5. Jika sukses, Flutter akan mendapatkan dan menyimpan session/Cookie yang terkait untuk dikirim ketika ada request yang lain.
+  6. User sudah telogin/punya session
+## Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+  1. InkWell : Untuk membuat widget yang bisa di klik.
+  2. TextField : Untuk membuat input teks.
+  3. Column : Untuk menyusun widget secara vertikal.
+  4. Container : Untuk membuat box model dengan padding, margin, dan dekorasi.
+  5. ElevatedButton : Untuk membuat tombol.
+  6. ListView : Untuk menampilkan daftar scrollable items.
+  7. ListTile : Untuk membuat item pada ListView. 
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+
+1. Menambahkan fungsi-fungsi autentikasi (login logout register) ke projek django dan menambahkan url terkait lalu mendeploynya.
+2. memodifikasi get_json pada django untuk hanya mengembalikan barang yang dimiliki user (bonus).
+3. menambahkan login page sesuai dengan tutorial
+4. menambahkan register page yang secara struktur mirip dengan productForm dilengkapi dengan validasi inputnya.
+5. menambahkan halaman untuk lihat produk yang tersambung dengan aplikasi django sesuai tutorial (bedanya disini saya ngirim beserta cookies biar django tau user yang request siapa).
+6. membuat laman untuk produk individu yang akan muncul ketika produk terkait di klik di laman list product
